@@ -36,64 +36,110 @@
             enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-            <DialogPanel class="inline-block p-5 overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-gray-800 rounded-lg shadow-2xl lg:p-8 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"> 
+            <DialogPanel class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6"> 
               <!-- Title -->
-              <DialogTitle class="flex items-center justify-between">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" width="24" height="24"
-                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                            <path d="M9 16v-8h4a2 2 0 0 1 0 4h-4"></path>
-                  </svg>
-                  <h1 class=" text-2xl font-extrabold leading-none tracking-tighter text-gray-800 dark:text-white"> Nuevo registro de reserva</h1>
-                  <span @click="setOpen(false)" class="cursor-pointer">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
-                          </svg>
-                  </span>
+              <DialogTitle class="items-center flex justify-between">
+                  <div class="flex items-center">
+                      <span
+                          class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 text-white">
+                          <PlusIcon class="h-6 w-6" aria-hidden="true" />
+                      </span>
+                      <p class="text-xl font-bold ml-2 sm:mt-0 sm:ml-3">
+                        Nuevo registro de reserva
+                      </p>
+                  </div>
+
+                  <button type="button"
+                      class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      @click="setOpen(false)">
+                      <span class="sr-only">Close</span>
+                      <XIcon class="h-6 w-6" aria-hidden="true" />
+                  </button>
               </DialogTitle>
              <!-- Form -->
-              <form @submit.prevent="handleSubmit" id="revue-form" name="revue-form" target="_blank" class="">
-                  <div class="container items-center px-5 py-12 lg:px-8 mx-auto space-y-4">
-                  <div class="relative">
+              <div>
+            
+                  <!-- <div class="mt-6">
                       <p class="font-bold text-xl dark:text-gray-200 mr-2 ml-2 md:ml-4 text-center animate-bounce"> {{ clock.date }}</p>
                       <h3 id="clock" class="font-bold text-2xl dark:text-gray-200 mr-2 ml-2 md:ml-4 text-center animate-bounce">
                       {{ clock.time }} {{ clock.ampm }}
                       </h3>
+                  </div> -->
+                  <!-- <div class="mt-6">
+                    <div
+                      class="flex items-center justify-center text-xl rounded-xl border-4 border-black bg-pink-100 px-8 py-4 font-bold shadow-[6px_6px_0_0_#000] transition hover:shadow-none focus:outline-none focus:ring active:bg-pink-50"      
+                    >
+                    {{ clock.time }} {{ clock.ampm }}
+                    </div>
+
+                  </div> -->
+                  <div class="mt-6 text-center">
+                    <!-- Hover -->
+
+                    <div
+                      class="group relative inline-block focus:outline-none focus:ring"
+                
+                    >
+                      <span
+                        class="absolute inset-0 translate-x-0 translate-y-0 bg-yellow-300 transition-transform group-hover:translate-y-1.5 group-hover:translate-x-1.5"
+                      ></span>
+
+                      <span
+                        class="relative inline-block border-2 border-current px-8 py-3 text-xl font-bold uppercase tracking-widest"
+                      >
+                      {{ clock.time }} {{ clock.ampm }}
+                      </span>
+                    </div>
                   </div>
-                  <div class="relative">
-                      <label for="name" class="text-base leading-7 text-blueGray-500">Tarifa</label>
-                      <select id="name" v-model="formData.fare"
-                      class="w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
-                      <!-- <option selected> ------- </option> -->
-                      <option v-for="option in fares" :key="option.id" :value="option.id"
-                          :selected="option === formData.fare">{{ option.name }}</option>
-                      </select>
+              
+                  <fieldset class="mt-6">
+                      <legend class="block text-sm font-medium text-gray-700">Tarifa</legend>
+                      <div class="mt-1 rounded-md shadow-sm -space-y-px">
+                          <div>
+                          <label for="fare" class="sr-only">fare</label>
+                          <select 
+                          v-model="formData.fare"
+                          id="fare" name="fare" autocomplete="fare-name" class="py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 relative block w-full bg-gray-50 focus:z-10 sm:text-sm border border-gray-300">
+                              <option disabled value=""> ------- </option>
+                              <option v-for="option in fares" :key="option.id" :value="option.id" >{{ option.name }}</option>
+                          </select>
+                          </div>
+                      </div>
+                  </fieldset>
+
+                  <div class="mt-6">
+                        <label for="name" class="block text-sm font-medium text-gray-700">Patente</label>
+                        <div class="mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+                            <input  
+                            v-model="formData.licence" 
+                            type="text" name="name" id="name" class="px-4 py-2 block w-full border-0 border-b border-transparent bg-gray-50 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="Ingrese patente">
+                        </div>
+                  </div>   
+
+                  <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                      <button 
+                      @click="handleSubmit"
+                      type="button"
+                          class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"   
+                          >
+                          Guardar
+                      </button>
+                      <button type="button"
+                          class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                          @click="setOpen(false)" ref="cancelButtonRef">
+                          Cancel
+                      </button>
                   </div>
-                  <div class="relative">
-                      <label for="name" class="text-base leading-7 text-blueGray-500">Patente</label>
-                      <input type="text" id="name" v-model="formData.licence"
-                      class="uppercase w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
-                  </div>
-                  </div>
-                  <div class="flex items-center w-full pt-4 mb-4">
-                  <button
-                      class="w-full py-3 text-base text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-800 ">
-                      Button </button>
-                  </div>
-              </form>
+              </div>
               <!-- Alert -->
-              <div v-if="errors.length" class="bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4"
-                  role="alert">
+              <div v-if="errors.length" class="mt-5 sm:mt-6 bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4" role="alert">
                   <p class="font-bold">
-                  Danger
+                      Error
                   </p>
                   <p v-for="error in errors" :key="error">
-                  {{ error }}
+                      {{ error }}
                   </p>
               </div>
-
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -105,7 +151,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import { XIcon, PlusIcon } from 'vue-tabler-icons';
 import FareAPI from '@/services/FareAPI';
 import CheckInAPI from '@/services/checkin/CheckInAPI';
 
@@ -118,8 +164,10 @@ import CheckInAPI from '@/services/checkin/CheckInAPI';
 
 watch(() => props.open, () => {
 
+  errors.value = []
+
   if (!props.open) {
-    formData.fare = 1,
+    formData.fare = '',
     formData.licence = ''
   }
 
@@ -150,7 +198,7 @@ const setOpen = (value) => {
 
 
 let formData = {
-  fare: 1,
+  fare: '',
   licence: '',
   lot: ''
 }
@@ -160,7 +208,8 @@ const errors = ref([])
 
 const handleSubmit = () => {
   errors.value = []
-  formData.licence === '' && errors.value.push('No ingreso la patente')
+  formData.fare === '' && errors.value.push('Tarifa: Debe selecionar una tarifa')
+  formData.licence === '' && errors.value.push('Patente: No ingreso la patente')
   formData.lot = props.lotNumber
 
   if (!errors.value.length) {
@@ -173,10 +222,14 @@ const handleSubmit = () => {
       .catch(error => {
         if (error.response) {
           for (const property in error.response.data) {
-            errors.value.push(`${property}: ${error.response.data[property]}`);
+            errors.value.push(`${property}: ${error.response.data[property]}`); // lo ideal mostrarlo en un alert
+            property === 'lot' && setOpen(false)
+            property === 'lot' &&  (errors.value = [])
           };
 
           console.log(JSON.stringify(error.response.data));
+          emit('loadLots')
+          // setOpen(false);
         }
         else if (error.message) {
           errors.value.push('Algo salio mal, porfavor intenta nuevamente')
@@ -186,13 +239,14 @@ const handleSubmit = () => {
   }
 }
 
-
-const fares = ref('')
+// Carga de Tarifas
+const fares = ref([])
 
 
 const loadFares = async () => {
   try {
     const response = await FareAPI.getFares();
+    console.log(response.data);
     fares.value = response.data;
   } catch (error) {
     console.log(error);

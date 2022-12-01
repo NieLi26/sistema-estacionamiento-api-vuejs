@@ -1,9 +1,12 @@
 <template>
+
+	
   <!-- This example requires Tailwind CSS v2.0+ -->
-  <div class="px-4 sm:px-6 lg:px-8">
+	<div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center sm:justify-end">
       <div class="mt-4 sm:mt-0 sm:ml-16 ">
-        <button @click="isOpen = true, dataFare = { name: '', price: '', id: null }, action = 'create'" type="button"
+        <button 
+		@click="isOpen = true, action = 'create', dataClient = {first_name:'', last_name:'', document_number:'', social_reason:'', adress: '', phone: '', email: ''}"
           class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Agregar</button>
       </div>
     </div>
@@ -11,33 +14,34 @@
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-300">
+            <table class="min-w-full divide-y divide-gray-300 text-sm">
               <thead class="bg-gray-50">
                 <tr class="divide-x divide-gray-200">
                   <th scope="col" class="py-3.5 pl-4 pr-4 text-left text-sm font-semibold text-gray-900 sm:pl-6">Id</th>
                   <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Nombre</th>
-                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Precio</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Apellido</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Numero Documento</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Razón Social</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Telefóno</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Correo</th>
+                  <th scope="col" class="px-4 py-3.5 text-left text-sm font-semibold text-gray-900">Dirección</th>
                   <th scope="col" class="px-4  py-3.5 text-sm font-semibold text-gray-900">Acciones</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
-                <tr v-for="{ id, name, price } in fares" :key="id" class="divide-x divide-gray-200">
+                <tr v-for="{id, first_name, last_name, document_number, social_reason, adress, phone, email } in clients" :key="id">
                   <td class="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-6">{{ id }}</td>
-                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ name }}</td>
-                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ price }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ first_name }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ last_name }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ document_number }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ social_reason }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ adress }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ phone }}</td>
+                  <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ email }}</td>
                   <td class="whitespace-nowrap py-4 text-sm text-gray-500 ">
                     <div class="flex items-center justify-center -space-x-4 hover:space-x-1">
-                      <!-- <button
-                        class="z-10 block rounded-full border-2 border-white bg-green-100 p-4 text-green-700 transition-all hover:scale-110 focus:outline-none focus:ring active:bg-green-50"
-                        type="button">
-                        <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                      </button> -->
-
-                      <button @click="isOpen = true, dataFare = { name: name, price: price, id: id }, action = 'update'"
+                      <button 
+					  @click="isOpen = true, action = 'update', dataClient = {id: id, first_name:first_name, last_name:last_name, document_number:document_number, social_reason:social_reason, adress: adress, phone: phone, email: email}"
                         class="z-10 block rounded-full border-2 border-white bg-blue-100 p-4 text-blue-700 transition-all hover:scale-110 focus:outline-none focus:ring active:bg-blue-50"
                         type="button">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -47,7 +51,8 @@
                         </svg>
                       </button>
 
-                      <button @click="isOpenCancel = true, dataFare = { name: '', price: '', id: id }"
+                      <button 
+					  @click="isOpenDelete = true, dataClient = {id: id}"
                         class="z-10 block rounded-full border-2 border-white bg-red-100 p-4 text-red-700 transition-all hover:scale-110 focus:outline-none focus:ring active:bg-red-50"
                         type="button">
                         <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -106,21 +111,23 @@
         </button>
       </div>
     </nav>
-  </div>
+  	</div>
 
-  <Modal :isOpen="isOpen" :fare="dataFare" :action="action" @toggle="(value) => isOpen = value"
-    @loadFares="() => loadFares()" />
-  <ModalDelete :isOpen="isOpenCancel" :fare="dataFare" @toggle="(value) => isOpenCancel = value"
-    @loadFares="() => loadFares()" />
+
+
+    <Modal :isOpen="isOpen" :client="dataClient" :action="action" @toggle="(value) => isOpen = value"  @loadClients="() => loadClients()"/>
+    <ModalDelete :isOpen="isOpenDelete" :client="dataClient"  @toggle="(value) => isOpenDelete = value"  @loadClients="() => loadClients()"/>
+
 </template>
-    
-<script setup>
-import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from 'vue-tabler-icons';
-import FarePeriodAPI from "@/services/FarePeriodAPI"
-import { ref } from "vue";
-import Modal from "../components/tarif_period/Modal.vue";
-import ModalDelete from "../components/tarif_period/ModalDelete.vue";
 
+<script setup>
+import { ref } from "vue";
+import ClientAPI from "@/services/ClientAPI"
+import Modal from '../components/client/Modal.vue';
+import ModalDelete from '../components/client/ModalDelete.vue';
+import moment from 'moment/min/moment-with-locales';
+
+moment.locale('es'); // default the locale to Spanish
 
 // PAGINATOR
 const currentPage = ref(1)
@@ -129,24 +136,23 @@ const showPreviousButton = ref(false)
 
 const loadNext = () => {
     currentPage.value++
-    loadFares();
+    loadClients();
 }
 
 const loadPrevious = () => {
     currentPage.value--
-    loadFares();
+    loadClients();
 }
 
 
+// Cargar todas los pagos
+const clients = ref('')
 
-// Cargar todas las tarifas
-const fares = ref('')
-
-const loadFares = async () => {
-  try {
-    const response = await FarePeriodAPI.getFaresPeriodPaginator(currentPage.value);
-    // setTimeout(() => {
-          showNextButton.value = false
+const loadClients = async () => {
+    try {
+        const response = await ClientAPI.getClientsPaginator(currentPage.value);
+        // setTimeout(() => {
+		showNextButton.value = false
           showPreviousButton.value = false
 
           if(response.data.next){
@@ -157,28 +163,25 @@ const loadFares = async () => {
             showPreviousButton.value = true
           }
 
-        fares.value = response.data.results;
-    // }, 3000)
-  } catch (error) {
-    console.log(error);
-  }
+            clients.value = response.data.results;
+            console.log(clients.value);
+        // }, 3000)
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-loadFares();
+loadClients();
 
-
-// data enviada a modal
+// data enviada a modal create and update
 const isOpen = ref(false)
-
-const isOpenCancel = ref(false)
 
 const action = ref('')
 
-const dataFare = ref({
-  id: null,
-  name: '',
-  price: ''
-})
+// data enviada a modal delete
+const isOpenDelete = ref(false)
+
+const dataClient = {}
 
 
 </script>

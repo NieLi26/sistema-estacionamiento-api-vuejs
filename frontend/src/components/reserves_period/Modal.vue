@@ -15,10 +15,9 @@
                     enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
                     leave-from="opacity-100 translate-y-0 sm:scale-100"
                     leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                    <div
-                        class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                        <div>
-                            <div class="items-center flex justify-between">
+                    <DialogPanel class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                        <!-- Title -->
+                        <DialogTitle class="items-center flex justify-between">
                                 <div class="flex items-center">
                                     <span
                                         class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 text-white">
@@ -35,16 +34,21 @@
                                     <span class="sr-only">Close</span>
                                     <XIcon class="h-6 w-6" aria-hidden="true" />
                                 </button>
-                            </div>
+                        </DialogTitle>
+
+                        <!-- FORM -->
+                        <div>
 
                                              
-                            <fieldset class="mt-6">
+                            <fieldset class="mt-6" v-if="props.action == 'create'">
                                 <legend class="block text-sm font-medium text-gray-700">Estacionamiento</legend>
                                 <div class="mt-1 rounded-md shadow-sm -space-y-px">
                                     <div>
-                                    <label for="lot" class="sr-only">Country</label>
-                                    <select id="lot" name="lot" autocomplete="lot-name" class="py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 relative block w-full  bg-gray-50 focus:z-10 sm:text-sm border border-gray-300">
-                                        <option selected> ------- </option>
+                                    <label for="lot" class="sr-only">lot</label>
+                                    <select 
+                                    v-model="formData.lot"
+                                    id="lot" name="lot" autocomplete="lot-name" class="py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 relative block w-full  bg-gray-50 focus:z-10 sm:text-sm border border-gray-300">
+                                        <option disabled value=""> ------- </option>
                                         <template v-for="{ name, id, status } in lots" :key="id" >
                                             <option v-if="status === 'av'" :value="id">
                                                 {{ name }}
@@ -61,10 +65,12 @@
                                 <legend class="block text-sm font-medium text-gray-700">Tarifa</legend>
                                 <div class="mt-1 rounded-md shadow-sm -space-y-px">
                                     <div>
-                                    <label for="farePeriod" class="sr-only">Country</label>
-                                    <select id="farePeriod" name="farePeriod" autocomplete="farePeriod-name" class="py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 relative block w-full bg-gray-50 focus:z-10 sm:text-sm border border-gray-300">
-                                        <option selected> ------- </option>
-                                        <option v-for="{name, id} in faresPëriod" :key="id" :value="id">
+                                    <label for="farePeriod" class="sr-only">fare</label>
+                                    <select 
+                                    v-model="formData.fare_period"
+                                    id="farePeriod" name="farePeriod" autocomplete="farePeriod-name" class="py-2 px-4 focus:ring-indigo-500 focus:border-indigo-500 relative block w-full bg-gray-50 focus:z-10 sm:text-sm border border-gray-300">
+                                        <option disabled value=""> ------- </option>
+                                        <option v-for="{name, id} in faresPeriod" :key="id" :value="id">
                                             {{ name }}
                                         </option>
                                     </select>
@@ -73,7 +79,7 @@
                             </fieldset>
 
                 
-                            <div class="mt-6">
+                            <!-- <div class="mt-6">
                                 <label for="name" class="block text-sm font-medium text-gray-700">Cliente</label>
                                 <div class="mt-1 border-b border-gray-300 focus-within:border-indigo-600">
                                     <input  
@@ -81,17 +87,25 @@
                                     @keyup="loadClients"
                                     type="text" name="name" id="name" class="px-4 py-2 block w-full border-0 border-b border-transparent bg-gray-50 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="Ingrese nombre">
                                 
-                                    <template v-if="clients.length">
-                                    <ul class="absolute z-10 w-full ">
-                                        <li v-for="{ first_name, last_name} in clients"  class="px-4 py-2 border-0 border-b border-transparent bg-gray-300 focus:border-indigo-600 focus:ring-0 sm:text-sm">
+                                    <template v-if="clients.length" class="">
+                                    <ul class="relative z-10 sm:max-w-lg sm:w-full">
+                                        <li v-for="{ first_name, last_name} in clients"  class=" px-4 py-2 border-0 border-b border-transparent bg-gray-300 focus:border-indigo-600 focus:ring-0 sm:text-sm">
                                             <button @click="formData.client = first_name + ' ' + last_name, clients = []">{{ first_name }} {{ last_name }}</button>
                                         </li>
                                     </ul>
                                     </template>
                                 </div>
                                 
+                            </div> -->
+               
+                            <div class="mt-6">
+                                <label for="name" class="block text-sm font-medium text-gray-700">Cliente</label>
+                                <div class="mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+                                    <v-select 
+                                    class=" focus:ring-indigo-500 focus:border-indigo-500 relative block w-full bg-gray-50 focus:z-10 sm:text-sm border border-gray-300"
+                                    v-model="formData.client"  :options="clients" label="first_name" :reduce="first_name => first_name.id"></v-select>
+                                </div>
                             </div>
-                
                 
                             <div class="mt-6">
                             <label for="name" class="block text-sm font-medium text-gray-700">Patente</label>
@@ -121,13 +135,12 @@
                                 type="date" name="checkout" id="checkout" class="px-4 py-2 block w-full border-0 border-b border-transparent bg-gray-50 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="Ingrese patente">
                             </div>
                             </div>
-                
-                       
-                        </div>
-                        <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                            <button type="button"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                            
+
+                            <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                            <button 
+                            @click="handleSubmit"
+                            type="button"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"   
                                 >
                                 Guardar
                             </button>
@@ -136,18 +149,20 @@
                                 @click="setOpen(false)" ref="cancelButtonRef">
                                 Cancel
                             </button>
+                            </div>        
                         </div>
 
+                     
                         <!-- Alert -->
-                        <!-- <div v-if="errors.length" class="mt-5 sm:mt-6 bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4" role="alert">
+                        <div v-if="errors.length" class="mt-5 sm:mt-6 bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4" role="alert">
                             <p class="font-bold">
                                 Error
                             </p>
                             <p v-for="error in errors" :key="error">
                                 {{ error }}
                             </p>
-                        </div> -->
-                    </div>
+                        </div>
+                    </DialogPanel>
                 </TransitionChild>
             </div>
         </Dialog>
@@ -160,37 +175,49 @@ import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } f
 import { XIcon, PlusIcon } from 'vue-tabler-icons';
 import FarePeriodAPI from '../../services/FarePeriodAPI';
 import ClientAPI from '../../services/ClientAPI';
+import ReservePeriodAPI from '../../services/ReservePeriodAPI';
 import CheckInAPI from "@/services/checkin/CheckInAPI"; // por mietras debo hacer calls de estacionamientos
 import moment from 'moment-timezone';
 
 
 console.log(moment.tz("America/Santiago").format('MM/DD/YYYY HH:mm'));
-// watch(() => props.isOpen, () => {
 
-//     errors.value = []
+watch(() => props.isOpen, () => {
 
-//     formData.name = props.fare.name
-//     formData.price = props.fare.price
+    errors.value = []
 
-//     if (!props.isOpen) {
-//         formData.name = ''
-//         formData.price = ''
-//     }
+    if(props.action === 'update'){
+        formData.value.lot = props.reservePeriod.lot
+        formData.value.fare_period = props.reservePeriod.fare_period
+        formData.value.client = props.reservePeriod.client
+        formData.value.licence = props.reservePeriod.licence
+        formData.value.check_in = moment(props.reservePeriod.check_in).format('YYYY-MM-DD')
+        formData.value.check_out = moment(props.reservePeriod.check_out).format('YYYY-MM-DD')
+    }
+
+    if (!props.isOpen) {
+        formData.value.lot = ''
+        formData.value.fare_period = ''
+        formData.value.client = null
+        formData.value.licence = ''
+        formData.value.check_in = ''
+        formData.value.check_out = ''
+    }
 
 
-// })
+})
 
 // pasar valor del padre al hijo - en este caso abrir modal
 const props = defineProps({
   isOpen: Boolean,
-//   fare: Object,
-//   action: String
+  reservePeriod: Object,
+  action: String
 })
 
 // console.log(props.reserve);
 
 // pasar valor del hijo al padre - en este caso cerrar el modal
-const emit = defineEmits(['toggle', 'loadFares']);
+const emit = defineEmits(['toggle', 'loadReservePeriod']);
 
 const setOpen = (value) => {
     // usamos el emit porque el padre debe hacer el cambio de estado, debemos avisarle del cambio, en este caso a false
@@ -199,22 +226,24 @@ const setOpen = (value) => {
 
 
 const formData = ref({
-  name: '',
-  price: '',
-  client: '',
+  lot: '',
+  fare_period: '',
+  client: null,
+  licence: '',
   check_in: '',
-  check_out: ''
+  check_out: '',
+  total: '',
 })
 
 
 
 // cargar tarifas
-const faresPëriod = ref('')
+const faresPeriod = ref('')
 
 const loadFaresPeriod = async () => {
   try {
     const response = await FarePeriodAPI.getFaresPeriod();
-    faresPëriod.value = response.data;
+    faresPeriod.value = response.data;
   } catch (error) {
     console.log(error);
   };
@@ -248,13 +277,13 @@ const clients = ref([])
 const loadClients = async () => {
   try {
 
-    clients.value = []
+    // clients.value = []
     // const response = await axios.get('http://127.0.0.1:8000/api/lots/')
     const response = await ClientAPI.getClients();
-
-    if (formData.value.client !== '') {
-        clients.value = response.data.filter(res => (res.first_name.toLowerCase().includes(formData.value.client.toLowerCase()) || res.last_name.toLowerCase().includes(formData.value.client.toLowerCase())) )
-    }
+    clients.value = response.data
+    // if (formData.value.client !== '') {
+    //     clients.value = response.data.filter(res => (res.first_name.toLowerCase().includes(formData.value.client.toLowerCase()) || res.last_name.toLowerCase().includes(formData.value.client.toLowerCase())) )
+    // }
 
     // }, 3000)
   } catch (error) {
@@ -262,6 +291,7 @@ const loadClients = async () => {
   }
 
 }
+loadClients()
 
 // date change restriccion
 watch(() => formData.value.check_in, () => {
@@ -271,50 +301,51 @@ watch(() => formData.value.check_in, () => {
 })
 
 
-// const changeData = () => {
-//     formData.client = 'feo' 
-// }
+const errors = ref([])
 
-// const getClient = () => return 
+const handleSubmit = () => {
+   console.log(formData.value);
+    errors.value = []
+    formData.value.lot === '' && errors.value.push('Estacionamiento: Debe seleccionar un estacionamiento')
+    formData.value.fare_period === '' && errors.value.push('Tarifa: Debe selecionar una tarifa')
+    formData.value.client === null  && errors.value.push('Cliente: Debe seleccionar un cliente')
+    formData.value.licence === '' && errors.value.push('Patente: No puede estar vacia')
+    formData.value.check_in === '' && errors.value.push('Fecha Entrada: Debe seleccionar una fecha')
+    formData.value.check_out === '' && errors.value.push('Fecha Salida: Debe seleccionar una fecha')
 
+    // let numericTest = /^[0-9]+$/;
+    // !numericTest.test(formData.price.value) &&  formData.price.value !== ''  && errors.value.push('Precio: Solo deben ser numeros')
+    // formData.price.value === '' && errors.value.push('No ingreso el precio')
 
+  if (!errors.value.length) {
+    let requestMethod = ''
 
-// const errors = ref([])
+    props.action === 'create' ? requestMethod = ReservePeriodAPI.createReservePeriod(formData.value) : props.action === 'update' ? requestMethod = ReservePeriodAPI.updateReservePeriod(props.reservePeriod.id, formData.value) : requestMethod = FareAPI.deleteFare(props.fare.id)
 
-// const handleSubmit = () => {
-//     errors.value = []
-//     formData.name === '' && errors.value.push('No ingreso el nombre')
-//     formData.price === '' && errors.value.push('No ingreso el precio')
+    requestMethod
+      .then(res => {
+        console.log(res)
+        emit('loadReservePeriod');
+        setOpen(false);
+      })
+      .catch(error => {
+        if (error.response) {
+          for (const property in error.response.data) {
+            errors.value.push(`${property}: ${error.response.data[property]}`);
+            property === 'lot' && setOpen(false)
+            property === 'lot' &&  (errors.value = [])
+          };
 
-//     let numericTest = /[0-9]$/;
-//     !numericTest.test(formData.price) &&  formData.price !== ''  && errors.value.push('Precio: Solo deben ser numeros')
-
-//   if (!errors.value.length) {
-//     let requestMethod = ''
-
-//     props.action === 'create' ? requestMethod = FareAPI.createFare(formData) : props.action === 'update' ? requestMethod = FareAPI.updateFare(props.fare.id, formData) : requestMethod = FareAPI.deleteFare(props.fare.id)
-
-//     requestMethod
-//       .then(res => {
-//         console.log(res)
-//         emit('loadFares');
-//         setOpen(false);
-//       })
-//       .catch(error => {
-//         if (error.response) {
-//           for (const property in error.response.data) {
-//             errors.value.push(`${property}: ${error.response.data[property]}`);
-//           };
-
-//           console.log(JSON.stringify(error.response.data));
-//         }
-//         else if (error.message) {
-//           errors.value.push('Algo salio mal, porfavor intenta nuevamente')
-//           console.log(JSON.stringify(error));
-//         }
-//       })
-//   }
-// }
+          console.log(JSON.stringify(error.response.data));
+          emit('loadReservePeriod');
+        }
+        else if (error.message) {
+          errors.value.push('Algo salio mal, porfavor intenta nuevamente')
+          console.log(JSON.stringify(error));
+        }
+      })
+  }
+}
 
 
 </script>

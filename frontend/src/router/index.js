@@ -7,6 +7,7 @@ import SignUp from '../views/SignUp.vue'
 import Reserves from '../views/Reserves.vue'
 import Tarif from '../views/Tarif.vue'
 import TarifPeriod from '../views/TarifPeriod.vue'
+import Client from '../views/Client.vue'
 import Payments from '../views/Payments.vue'
 import ReservePeriod from '../views/ReservePeriod.vue'
 
@@ -57,6 +58,11 @@ const router = createRouter({
       path: '/tarif-period',
       name: 'tarif-period',
       component: TarifPeriod
+    },
+    {
+      path: '/client',
+      name: 'client',
+      component: Client
     },
     {
       path: '/payments',

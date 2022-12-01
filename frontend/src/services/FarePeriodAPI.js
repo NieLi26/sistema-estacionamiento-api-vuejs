@@ -4,6 +4,9 @@ export default {
     getFaresPeriod() {
         return API.get('/fares-period/')
     },
+    getFaresPeriodPaginator(page_number) {
+        return API.get(`/fares-period-pagination/?page=${page_number}`)
+    },
     getFarePeriod(pk) {
         return API.get(`/fares-period/${pk}/`)
     },

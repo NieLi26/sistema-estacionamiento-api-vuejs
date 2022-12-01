@@ -4,6 +4,9 @@ export default {
     getPayments() {
         return API.get('/payments/')
     },
+    getPaymentsPaginator(page_number) {
+        return API.get(`/payments-pagination/?page=${page_number}`)
+    },
     getFare(pk) {
         return API.get(`/fares/${pk}/`)
     },

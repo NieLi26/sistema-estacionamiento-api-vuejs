@@ -169,10 +169,6 @@
             <!-- Search -->
             <div class="flex-1 flex items-center">
                 <RouterLink class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md" to="/">Home</RouterLink>
-                <template v-if="!useAuthStore().user.isAuthenticated">
-                    <RouterLink class="text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-2 text-sm font-medium rounded-md" to="/signup">Sign up</RouterLink>
-                    <RouterLink class="text-gray-600 hover:bg-gray-50 hover:text-gray-900', 'group flex items-center px-2 py-2 text-sm font-medium rounded-md" to="/signin">Sign in</RouterLink>
-                </template>
             </div>
             <div class="mr-4 flex items-center md:mr-6">
                 <button
@@ -210,12 +206,16 @@
                 </div>
                 <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
                   <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                      <a :href="item.href" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name }}</a>
-                    </MenuItem>
+                    <!-- <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
+                      <a :href="item.href" :class="[active ? 'bg-gray-50' : '', 'block px-4 py-2 text-sm text-gray-600']">{{ item.name }}</a>
+                    </MenuItem> -->
                     <MenuItem v-if="useAuthStore().user.isAuthenticated" v-slot="{ active }">
-                      <a href="#" @click="login" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">Sign out</a>
-                    </MenuItem>     
+                      <a href="#" @click="logout" :class="[active ? 'bg-gray-50' : '', 'block px-4 py-2 text-sm text-gray-600']">Sign out</a>
+                    </MenuItem>
+                    <template v-if="!useAuthStore().user.isAuthenticated">
+                      <RouterLink class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 block px-4 py-2 text-sm" to="/signup">Sign up</RouterLink>
+                      <RouterLink class="text-gray-600 hover:bg-gray-50 hover:text-gray-900 block px-4 py-2 text-sm" to="/signin">Sign in</RouterLink>
+                    </template>     
                   </MenuItems>
                 </transition>
               </Menu>
@@ -286,12 +286,8 @@ import { ParkingIcon, BookIcon, ClockHour3Icon, BrandCashappIcon, CalendarPlusIc
 const navigation = [
   { name: 'Estacionamiento', to: '#', icon: ParkingIcon, subMenu: [{name: 'Entrada', to:'/checkin', icon: ArrowRightOnRectangleIcon}, {name: 'Salida', to:'/checkout', icon: ArrowLeftOnRectangleIcon},   { name: 'Agendar', to: '/reserve-period', icon: CalendarPlusIcon},]},
   { name: 'Registro', to: '#', icon: BookIcon, subMenu: [{name: 'Por Hora', to:'/reserves', icon: ClockHour3Icon}]},
-  { name: 'Mantenimiento', to: '#', icon: WrenchScrewdriverIcon, subMenu: [{name: 'Tarifa', to:'/tarif'}, {name: 'Tarifa plan', to:'/tarif-period'}]},
+  { name: 'Mantenimiento', to: '#', icon: WrenchScrewdriverIcon, subMenu: [{name: 'Tarifa', to:'/tarif'}, {name: 'Tarifa plan', to:'/tarif-period'}, {name: 'Cliente', to:'/client'}]},
   { name: 'Pagos', to: '/payments', icon: BrandCashappIcon},
-//   { name: 'Projects', to: '..', icon: FolderIcon},
-//   { name: 'Calendar', to: '..', icon: CalendarIcon},
-//   { name: 'Documents', to: '..', icon: InboxIcon},
-//   { name: 'Reports', to: '..', icon: ChartBarIcon},
 ]
 
 const userNavigation = [
@@ -303,7 +299,7 @@ const userNavigation = [
 const sidebarOpen = ref(false)
 
 
-const login = async () => {
+const logout = async () => {
 
 // para borrar el token de la BBDD  
 AuthAPI.logoutUser()

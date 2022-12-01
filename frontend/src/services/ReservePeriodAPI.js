@@ -4,16 +4,16 @@ export default {
     getReservePeriods() {
         return API.get('/reserve-period/')
     },
-    // getFare(pk) {
-    //     return API.get(`/fares/${pk}/`)
-    // },
-    // createFare(data) {
-    //     return API.post('/fares/', data)
-    // },
-    // updateFare(pk, data) {
-    //     return API.patch(`/fares/${pk}/`, data)
-    // },
-    // deleteFare(pk) {
-    //     return API.delete(`/fares/${pk}/`)
-    // },
+    getReservePeriodPaginator(page_number, q) {
+        return API.get(`/reserve-period-pagination/?page=${page_number}&q=${q}`)
+    },
+    createReservePeriod(data) {
+        return API.post('/reserve-period/', data)
+    },
+    updateReservePeriod(pk, data) {
+        return API.put(`/reserve-period/${pk}/`, data)
+    },
+    deleteReservePeriod(pk) {
+        return API.delete(`/reserve-period/${pk}/`)
+    },
 }

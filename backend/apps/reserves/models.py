@@ -1,6 +1,5 @@
 from django.db import models
-from django.db.models.signals import post_save
-from django.utils import timezone
+
 
 from apps.base.models import BaseModel
 # Create your models here.
@@ -19,7 +18,7 @@ class Lot(BaseModel):
         DISABILITY = 'di', 'Discapacitado'
     
     name = models.CharField('Numero', max_length=3)
-    status = models.CharField('Estado Estacionamiento', choices=Status.choices, max_length=2)
+    status = models.CharField('Estado Estacionamiento', choices=Status.choices, max_length=2, default=Status.AVAIBLE)
     type = models.CharField('Tipo Estacionamiento', choices=Types.choices, max_length=2)
 
     class Meta:
@@ -75,17 +74,6 @@ class Reserve(BaseModel):
     def __str__(self):
         return self.licence
 
-def reserve_save(sender, instance, created, **kwargs):
-    lot = Lot.objects.filter(id=instance.lot_id)
-    if created:
-        if instance.status == "bu":
-            lot.update(status="bu")
-
-    if instance.status == "an":
-        lot.update(status="av")
-
-post_save.connect(reserve_save, sender=Reserve)
-
 class Payment(BaseModel):
 
     reserve = models.ForeignKey(
@@ -100,18 +88,6 @@ class Payment(BaseModel):
 
     def __str__(self):
         return str(self.number)
-
-def payment_save(sender, instance, created, **kwargs):
-    if created:       
-        reserve = Reserve.objects.get(id=instance.reserve.id)
-        lot = Lot.objects.get(id=reserve.lot.id)
-        reserve.status = 'fi'
-        lot.status = 'av'
-        lot.save()
-        reserve.check_out = timezone.now()
-        reserve.save()
-
-post_save.connect(payment_save, sender=Payment)
 
 class FarePeriod(BaseModel):
     """Model definition for FarePlan."""
@@ -133,19 +109,22 @@ class ReservePeriod(BaseModel):
     '''Model definition for ReservePeriod.'''
 
     class Status(models.TextChoices):
+        # RESERVED = 're', 'Reservada'
         INITIATE = 'in', 'Iniciada'
         FINISHED = 'fi', 'Finalizada'
         ANULLED = 'an', 'Anulada'
 
     lot = models.ForeignKey(
         Lot, on_delete=models.CASCADE, verbose_name="Estacionamiento", related_name="periods")
-    status = models.CharField(choices=Status.choices, verbose_name="Estado de Reserva Periodo", default='in', max_length=2) 
+    status = models.CharField(choices=Status.choices, verbose_name="Estado de Reserva Periodo", default=Status.INITIATE, max_length=2) 
     fare_period = models.ForeignKey(
         FarePeriod, on_delete=models.CASCADE, verbose_name='Tarifa Plan', related_name="periods")
+    client = models.ForeignKey('Client', on_delete=models.CASCADE, verbose_name="cliente", related_name="periods")
     licence = models.CharField('Patente', max_length=15)
     check_in = models.DateTimeField('Entrada')
     check_out = models.DateTimeField('Salida')
     total = models.PositiveIntegerField()
+    # advance = models.PositiveIntegerField()
     obs = models.TextField(
         max_length=200, blank=True)
 
@@ -157,16 +136,6 @@ class ReservePeriod(BaseModel):
 
     def __str__(self):
         return self.licence
-
-def reserve_period_save(sender, instance, created, **kwargs):
-    lot = Lot.objects.filter(id=instance.lot_id)
-    if created:
-        lot.update(status="re")
-
-    if instance.status == "an":
-        lot.update(status="av")
-
-post_save.connect(reserve_period_save, sender=ReservePeriod)
 
 class Client(models.Model):
     '''Model definition for Client.'''

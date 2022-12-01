@@ -4,6 +4,9 @@ export default {
     getFares() {
         return API.get('/fares/')
     },
+    getFaresPaginator(page_number) {
+        return API.get(`/fares-pagination/?page=${page_number}`)
+    },
     getFare(pk) {
         return API.get(`/fares/${pk}/`)
     },

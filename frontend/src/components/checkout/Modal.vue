@@ -38,27 +38,27 @@
             enter-to="opacity-100 translate-y-0 sm:scale-100" leave="ease-in duration-200"
             leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-            <DialogPanel
-        class="inline-block p-5 overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-gray-800 rounded-lg shadow-2xl lg:p-8 sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <DialogPanel class="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
               <!-- Title -->
-              <DialogTitle class="flex items-center justify-between">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" width="24" height="24"
-                      viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                      stroke-linejoin="round">
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                      <path d="M9 16v-8h4a2 2 0 0 1 0 4h-4"></path>
-                  </svg>
-                  <h1 class=" text-2xl font-extrabold leading-none tracking-tighter text-gray-800 dark:text-white"> Nuevo
-                      registro de salida</h1>
-                  <span @click="setOpen(false)" class="cursor-pointer">
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                          <path fill-rule="evenodd"
-                              d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                              clip-rule="evenodd" />
-                      </svg>
-                  </span>
+              <DialogTitle class="items-center flex justify-between">
+                  <div class="flex items-center">
+                      <span
+                          class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-200 text-white">
+                          <PlusIcon class="h-6 w-6" aria-hidden="true" />
+                      </span>
+                      <p class="text-xl font-bold ml-2 sm:mt-0 sm:ml-3">
+                        Nuevo registro de salida
+                      </p>
+                  </div>
+
+                  <button type="button"
+                      class="bg-white rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      @click="setOpen(false)">
+                      <span class="sr-only">Close</span>
+                      <XIcon class="h-6 w-6" aria-hidden="true" />
+                  </button>
               </DialogTitle>
+              <!-- Subtitle -->
               <div class="bg-blue-50 border border-blue-400 rounded text-blue-800 text-sm p-4 flex items-start mt-4">
                   <div>
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -80,94 +80,105 @@
                   </div>
               </div>
               <!-- Form -->
-              <form @submit.prevent="handleSubmit" id="revue-form" name="revue-form" target="_blank" class="">
-                  <div class="container items-center px-5 py-12 lg:px-8 mx-auto space-y-4">
-                      <div class="relative">
-                          <p class="font-bold text-xl dark:text-gray-200 mr-2 ml-2 md:ml-4 text-center animate-bounce"> {{
-                          clock.date }}</p>
-                          <h3 id="clock"
-                              class="font-bold text-2xl dark:text-gray-200 mr-2 ml-2 md:ml-4 text-center animate-bounce">
-                              {{ clock.time }} {{ clock.ampm }}
-                          </h3>
-                      </div>
-                      <div class="relative">
-                          <div
-                              class="py-2 px-4 bg-blue-100 dark:bg-white text-gray-600 border-l-4 border-blue-500 flex items-center justify-between">
-                              <p class="text-xs flex items-center dark:text-gray-800">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                      stroke="currentColor" class="w-5 h-5 text-blue-500 mr-2">
-                                      <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  Resguardado:
-                              </p>
-                              <div class="flex items-center">
-                                  <span class="font-bold text-xs dark:text-gray-800 mr-2 ml-2 md:ml-4">
-                                      {{ durationShow }}
-                                  </span>
-                                  <!-- <button class="text-sm p-1 text-gray-400 border rounded bg-blue-500 mr-4">
-                                      <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24" class="text-white">
-                                        <g fill="none">
-                                          <path
-                                            d="M9 6a1 1 0 0 1 1 1v10a1 1 0 1 1-2 0V7a1 1 0 0 1 1-1zm6 0a1 1 0 0 1 1 1v10a1 1 0 1 1-2 0V7a1 1 0 0 1 1-1z"
-                                            fill="currentColor">
-                                          </path>
-                                        </g>
-                                      </svg>
-                                    </button> -->
-                              </div>
+              <div>
+                  <div class="mt-6 text-center">
+                    <div
+                      class="group relative inline-block focus:outline-none focus:ring"
+                
+                    >
+                      <span
+                        class="absolute inset-0 translate-x-0 translate-y-0 bg-yellow-300 transition-transform group-hover:translate-y-1.5 group-hover:translate-x-1.5"
+                      ></span>
+
+                      <span
+                        class="relative inline-block border-2 border-current px-8 py-3 text-xl font-bold uppercase tracking-widest"
+                      >
+                      {{ clock.time }} {{ clock.ampm }}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div class="mt-6">
+                      <div
+                          class="py-2 px-4 bg-blue-100 dark:bg-white text-gray-600 border-l-4 border-blue-500 flex items-center">
+                          <p class="text-xs flex items-center dark:text-gray-800">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-5 h-5 text-blue-500 mr-2">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              Resguardado:
+                          </p>
+                          <div class="flex items-center ">
+                              <span class="font-bold text-xs dark:text-gray-800 mr-2 ml-2 md:ml-4">
+                                  {{ durationShow }}
+                              </span>
                           </div>
-                      </div>
-                      <div class="relative">
-                          <div
-                              class="py-2 px-4 bg-blue-100 dark:bg-white text-gray-600 border-l-4 border-blue-500 flex items-center justify-between">
-                              <p class="text-xs flex items-center dark:text-gray-800">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                      stroke="currentColor" class="w-5 h-5 text-blue-500 mr-2">
-                                      <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                  </svg>
-                                  Valor Total:
-                              </p>
-                              <div class="flex items-center">
-                                  <span class="font-bold text-xs dark:text-gray-800 mr-2 ml-2 md:ml-4">
-                                      $ {{ total }}
-                                  </span>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="relative" v-if="isHidden">
-                          <label for="name" class="text-base leading-7 text-blueGray-500">Numero Boleta</label>
-                          <input type="numeric" id="name" v-model="formData.number"
-                              class="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2">
-                      </div>
-                      <div class="relative" v-if="!isHidden">
-                          <label for="name" class="text-base leading-7 text-blueGray-500">Observación</label>
-                          <textarea v-model="formData.obs" name="" id="" cols="30" rows="5"
-                              class="w-full px-4 py-2 mt-2 mr-4 text-base text-black transition duration-500 ease-in-out transform rounded-lg bg-gray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"></textarea>
                       </div>
                   </div>
-                  <div class="flex items-center w-full pt-4 mb-4 space-x-2">
-                      <button
-                          class="w-full py-3 text-base text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-blue-800 ">
-                          Registrar Salida
+
+                  <div class="mt-6">
+                      <div
+                          class="py-2 px-4 bg-blue-100 dark:bg-white text-gray-600 border-l-4 border-blue-500 flex items-center">
+                          <p class="text-xs flex items-center dark:text-gray-800">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-5 h-5 text-blue-500 mr-2">
+                                  <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                              Valor Total:
+                          </p>
+                          <div class="flex items-center">
+                              <span class="font-bold text-xs dark:text-gray-800 mr-2 ml-2 md:ml-4">
+                                  $ {{ total }}
+                              </span>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="mt-6" v-if="isHidden">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Numero Boleta</label>
+                    <div class="mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+                        <input  
+                        v-model="formData.number"
+                        type="text" name="name" id="name" class="px-4 py-2 block w-full border-0 border-b border-transparent bg-gray-50 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="Ingrese número boleta">
+                        </div>
+                  </div> 
+
+                  <div class="mt-6" v-else-if="!isHidden">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Observación</label>
+                    <div class="mt-1 border-b border-gray-300 focus-within:border-indigo-600">
+                        <textarea  
+                        v-model="formDataReserve.obs"
+                        type="text" name="name" id="name" class="px-4 py-2 block w-full border-0 border-b border-transparent bg-gray-50 focus:border-indigo-600 focus:ring-0 sm:text-sm" placeholder="Ingrese observación"></textarea>
+                    </div>
+                  </div>   
+
+                  <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+                      <button 
+                      @click="handleSubmit"
+                      type="button"
+                          class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"   
+                          >
+                          Guardar
                       </button>
-                      <button @click="handleCancel" type="button"
-                          class="w-full py-3 text-base text-white transition duration-500 ease-in-out transform bg-red-600 border-red-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-red-800 ">
+                      <button type="button"
+                          class="mt-3 w-full inline-flex justify-center rounded-md border border-red-300 shadow-sm px-4 py-2 bg-red text-base font-medium text-gray-700 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                          @click="handleCancel"
+                          ref="cancelButtonRef">
                           Anular
                       </button>
-                  </div>
-              </form>
+                  </div>    
+              </div>
               <!-- Alert -->
-              <div v-if="errors.length" class="bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4" role="alert">
+              <div v-if="errors.length" class="mt-5 sm:mt-6 bg-yellow-200 border-yellow-600 text-yellow-600 border-l-4 p-4" role="alert">
                   <p class="font-bold">
-                      Danger
+                      Error
                   </p>
                   <p v-for="error in errors" :key="error">
                       {{ error }}
                   </p>
               </div>
-
             </DialogPanel>
           </TransitionChild>
         </div>
@@ -180,7 +191,7 @@
 <script setup>
 import { onBeforeMount, onMounted, ref, watch } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, DialogDescription, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { ExclamationTriangleIcon } from '@heroicons/vue/24/outline'
+import { XIcon, PlusIcon } from 'vue-tabler-icons';
 import CheckOutAPI from '@/services/checkout/CheckOutAPI';
 import moment from 'moment-timezone';
 
@@ -192,14 +203,15 @@ watch(() => props.open, () => {
     formData.number = '',
     formData.obs = ''
   }
-
+  
+  formDataReserve.lot = props.reserve.lot_id
   let checkInDate = props.reserve.check_in;
   let checkOutDate = moment.tz("America/Santiago").format('MM/DD/YYYY HH:mm');
   checkInDate = moment(checkInDate)
   checkOutDate = moment(checkOutDate);
-
   duration.value = moment.duration(checkOutDate.diff(checkInDate))
-
+  console.log(formData);
+  // console.log(formDataReserve);
   // duration.value.difference.asMinutes() > 1 && (duration.value.minutes = Math.trunc(duration.value.difference.asMinutes()))
   // duration.value.difference.asHours() > 1 && (duration.value.hours = Math.trunc(duration.value.difference.asHours()))
   // duration.value.difference.asDays() > 1 && (duration.value.days = Math.trunc(duration.value.difference.asDays()))
@@ -269,12 +281,12 @@ const handleSubmit = () => {
 
   formData.reserve = props.reserve.id
   formData.total = total.value
-
+  console.log(formData);
   errors.value = []
 
   isHidden.value = true
 
-  let numericTest = /[0-9]$/;
+  let numericTest = /^[0-9]+$/;
   !numericTest.test(formData.number) &&  formData.number !== ''  && errors.value.push('Numero de boleta: Solo deben ser numeros')
   formData.number === '' && errors.value.push('Numero de boleta: No puede estar vacio')
 
@@ -282,7 +294,7 @@ const handleSubmit = () => {
   if (!errors.value.length) {
     CheckOutAPI.createPayment(formData)
       .then(res => {
-        console.log(res)
+  
         emit('loadLots')
         setOpen(false);
       })
@@ -290,9 +302,12 @@ const handleSubmit = () => {
         if (error.response) {
           for (const property in error.response.data) {
             errors.value.push(`${property}: ${error.response.data[property]}`);
+            property === 'reserve' && setOpen(false)
+            property === 'reserve' &&  (errors.value = [])
           };
 
           console.log(JSON.stringify(error.response.data));
+          emit('loadLots')
         }
         else if (error.message) {
           errors.value.push('Algo salio mal, porfavor intenta nuevamente')
@@ -304,15 +319,22 @@ const handleSubmit = () => {
 
 const isHidden = ref(true)
 
+
+const formDataReserve = {
+  status: 'an',
+  obs: '',
+  lot: ''
+}
+
 const handleCancel = () => {
   errors.value = []
 
-  formData.obs === '' && errors.value.push('Observación: No puede estar vacia')
+  formDataReserve.obs === '' && errors.value.push('Observación: No puede estar vacia')
   isHidden.value = false
 
 
-  if (formData.obs !== '') {
-  CheckOutAPI.updateReserve(props.reserve.id, {status: 'an', obs: formData.obs})
+  if (formDataReserve.obs !== '') {
+  CheckOutAPI.updateReserve(props.reserve.id, formDataReserve)
     .then(res => {
           console.log(res)
           emit('loadLots')
@@ -322,9 +344,12 @@ const handleCancel = () => {
           if (error.response) {
             for (const property in error.response.data) {
               errors.value.push(`${property}: ${error.response.data[property]}`);
+              property === 'lot' && setOpen(false)
+              property === 'lot' &&  (errors.value = [])
             };
 
             console.log(JSON.stringify(error.response.data));
+            emit('loadLots')
           }
           else if (error.message) {
             errors.value.push('Algo salio mal, porfavor intenta nuevamente')

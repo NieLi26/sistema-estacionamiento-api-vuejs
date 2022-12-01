@@ -4,7 +4,7 @@
   <div class="sm:flex sm:items-center sm:justify-end">
     <div class="mt-4 sm:mt-0 sm:ml-16 ">
       <button 
-      @click="isOpen = true, dataFare = {name: '', price: '', id: null}, action = 'create'"
+      @click="isOpen = true, dataFare = {name: '', price: ''}, action = 'create'"
       type="button" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Agregar</button>
     </div>
   </div>
@@ -28,7 +28,7 @@
                 <td class="whitespace-nowrap p-4 text-sm text-gray-500">{{ price }}</td>
                 <td class="whitespace-nowrap py-4 text-sm text-gray-500 ">
                   <div class="flex items-center justify-center -space-x-4 hover:space-x-1">
-                    <button
+                    <!-- <button
                       class="z-10 block rounded-full border-2 border-white bg-green-100 p-4 text-green-700 transition-all hover:scale-110 focus:outline-none focus:ring active:bg-green-50"
                       type="button"
                     >
@@ -46,7 +46,7 @@
                           d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                         />
                       </svg>
-                    </button>
+                    </button> -->
 
                     <button
                     @click="isOpen = true, dataFare = {name: name, price: price, id: id}, action = 'update'"
@@ -100,6 +100,37 @@
       </div>
     </div>
   </div>
+  <nav class="border-t border-gray-200 px-4 flex items-center justify-between sm:px-0">
+    <div class="-mt-px w-0 flex-1 flex">
+      <button
+      v-if="showPreviousButton"
+      @click="loadPrevious"
+      class="border-t-2 border-transparent pt-4 pr-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        <ArrowNarrowLeftIcon class="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+        Previous
+      </button>
+    </div>
+    <div class="hidden md:-mt-px md:flex">
+      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> 1 </a>
+      <!-- Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" -->
+      <a href="#" class="border-indigo-500 text-indigo-600 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium" aria-current="page"> 2 </a>
+      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> 3 </a>
+      <span class="border-transparent text-gray-500 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> ... </span>
+      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> 8 </a>
+      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> 9 </a>
+      <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 border-t-2 pt-4 px-4 inline-flex items-center text-sm font-medium"> 10 </a>
+    </div>
+    <div class="-mt-px w-0 flex-1 flex justify-end">
+      <button 
+      v-if="showNextButton"
+      @click="loadNext"
+      class="border-t-2 border-transparent pt-4 pl-1 inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300">
+        Next
+        <ArrowNarrowRightIcon class="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+      </button>
+    </div>
+  </nav>
+
 </div>
 
 <Modal :isOpen="isOpen" :fare="dataFare" :action="action" @toggle="(value) => isOpen = value"  @loadFares="() => loadFares()"/>
@@ -107,19 +138,49 @@
 </template>
 
 <script setup>
+// import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from '@heroicons/vue/24/solid'
+import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from 'vue-tabler-icons';
 import FareAPI from "@/services/FareAPI"
 import { ref } from "vue";
 import Modal from "../components/tarif/Modal.vue";
 import ModalDelete from "../components/tarif/ModalDelete.vue";
+
+
+// PAGINATOR
+const currentPage = ref(1)
+const showNextButton = ref(false)
+const showPreviousButton = ref(false)
+
+const loadNext = () => {
+    currentPage.value++
+    loadFares();
+}
+
+const loadPrevious = () => {
+    currentPage.value--
+    loadFares();
+}
+
 
 // Cargar todas las tarifas
 const fares = ref('')
 
 const loadFares = async () => {
     try {
-        const response = await FareAPI.getFares();
+        const response = await FareAPI.getFaresPaginator(currentPage.value);
         // setTimeout(() => {
-        fares.value = response.data;
+          showNextButton.value = false
+          showPreviousButton.value = false
+
+          if(response.data.next){
+            showNextButton.value = true
+          }
+
+          if(response.data.previous){
+            showPreviousButton.value = true
+          }
+
+        fares.value = response.data.results;
         // }, 3000)
     } catch (error) {
         console.log(error);
@@ -141,6 +202,8 @@ const dataFare = ref({
   name: '',
   price: ''
 })
+
+
 
 
 </script>
